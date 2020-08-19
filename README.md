@@ -29,7 +29,7 @@ Some branches will have a beginning and an end state. These are marked with the 
        
 4. Run these commands from the folder root
 	```
-	dotenet restore
+	dotnet restore
 	dotnet tool restore
 	dotnet ef database update --project Beam.Server/Beam.Server.csproj 
 	```
