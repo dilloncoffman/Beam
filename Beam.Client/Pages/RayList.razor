@@ -1,10 +1,9 @@
 @page "/frequency/{id:int}"
 @inject IDataService data
 
-@* @bind attribute is automatically hooking up the property and the event for two-way binding, don't have to do anything else *@
-<RayInput @bind-newRay="newRay" RayCast="@RayCast"/>
+<RayInput @bind-newRay="newRay" RayCast="@RayCast" />
 <div class="spinner-border" role="status" hidden="@HideLoading">
-    <span class="sr-only">Loading...</span>
+  <span class="sr-only">Loading...</span>
 </div>
 @foreach (var ray in data.Rays)
 {
@@ -13,15 +12,14 @@
     </p>
 }
 
-
-
-
 @code{
     [Parameter]
     public int Id { get; set; }
 
     public RayToCast newRay { get; set; } = new RayToCast();
-    public bool HideLoading { get; set; }
+
+    public bool HideLoading { get; set; } = false;
+
 
     protected override void OnParametersSet()
     {
@@ -33,7 +31,9 @@
     {
         HideLoading = true;
         if (!data.Rays.Any(r => r.UserName == data.CurrentUser.Name))
-            newRayText = $"Hello, My Name is {data.CurrentUser.Name}";
+            newRay.Text = $"Hello, my name is {data.CurrentUser.Name}";
+        else
+            newRay.Text = "";
         StateHasChanged();
     }
 
@@ -41,4 +41,5 @@
     {
         HideLoading = false;
     }
+
 }
