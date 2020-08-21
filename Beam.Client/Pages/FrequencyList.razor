@@ -1,4 +1,4 @@
-@inject DataService data
+@inject IDataService data
 
 @if (data.Frequencies != null)
 {
@@ -26,7 +26,7 @@
     private string name = "";
     protected override void OnInitialized()
     {
-        data.UdpatedFrequencies += StateHasChanged;
+        data.UpdatedFrequencies += StateHasChanged;
         data.GetFrequencies().ConfigureAwait(false);
     }
 

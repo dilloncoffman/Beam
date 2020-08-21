@@ -6,13 +6,13 @@ using Beam.Shared;
 
 namespace Beam.Client.Services
 {
-  public class DataService
+  public class DataService : IDataService
   {
     public IReadOnlyList<Frequency> Frequencies { get; private set; }
     public IReadOnlyList<Ray> Rays { get; private set; } = new List<Ray>();
     public User CurrentUser { get; set; }
     private int? selectedFrequency;
-    private BeamApiService _apiService;
+    private IBeamApiService _apiService;
 
     public int SelectedFrequency
     {
@@ -31,19 +31,19 @@ namespace Beam.Client.Services
       }
     }
 
-    public DataService(BeamApiService apiService)
+    public DataService(IBeamApiService apiService)
     {
       _apiService = apiService;
       if (CurrentUser == null) CurrentUser = new User() { Name = "Anon" + new Random().Next(0, 10) };
     }
 
-    public event Action UdpatedFrequencies;
+    public event Action UpdatedFrequencies;
     public event Action UpdatedRays;
 
     public async Task GetFrequencies()
     {
       Frequencies = await _apiService.FrequencyList();
-      UdpatedFrequencies?.Invoke();
+      UpdatedFrequencies?.Invoke();
     }
 
     public async Task GetRays(int FrequencyId)
@@ -61,7 +61,7 @@ namespace Beam.Client.Services
     public async Task AddFrequency(string Name)
     {
       Frequencies = await _apiService.AddFrequency(new Frequency() { Name = Name });
-      UdpatedFrequencies?.Invoke();
+      UpdatedFrequencies?.Invoke();
     }
 
     public async Task CreateRay(string text)

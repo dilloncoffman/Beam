@@ -6,7 +6,7 @@ using Beam.Shared;
 
 namespace Beam.Client.Services
 {
-  public class BeamApiService
+  public class BeamApiService : IBeamApiService
   {
     HttpClient http;
 
@@ -59,6 +59,5 @@ namespace Beam.Client.Services
     {
       return http.GetFromJsonAsync<List<Ray>>($"api/Prism/Remove/{userId}/{rayId}");
     }
-
   }
 }

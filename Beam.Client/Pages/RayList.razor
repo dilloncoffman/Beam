@@ -1,5 +1,5 @@
 @page "/frequency/{id:int}"
-@inject DataService data
+@inject IDataService data
 
 @* @bind attribute is automatically hooking up the property and the event for two-way binding, don't have to do anything else *@
 <RayInput @bind-newRayText="newRayText" RayCast="@RayCast"/>
