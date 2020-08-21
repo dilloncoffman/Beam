@@ -30,9 +30,11 @@ namespace Beam.Tests
       return Task.CompletedTask;
     }
 
+    // With invalid input in RayInputsTest this shouldn't be called, with valid input it should be called
     public Task CreateRay(string text)
     {
-      throw new NotImplementedException();
+      UpdatedRays?.Invoke();
+      return Task.CompletedTask;
     }
 
     public Task GetFrequencies()

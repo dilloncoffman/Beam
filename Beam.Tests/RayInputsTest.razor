@@ -24,3 +24,62 @@
       }
     }
 </SnapshotTest>
+
+<Fixture Description="Ray Not Created For Empty Input" Test="EmptyInputDoesntCreate">
+    <ComponentUnderTest>
+        <RayInput newRay="@(new RayToCast() { Text = "Test"})"></RayInput>
+    </ComponentUnderTest>
+    <Fragment>
+        <p></p>
+        <Card title="Cast a new ray:">
+          <form>
+            <div class="input-group">
+              <textarea class="form-control valid" value=""></textarea>
+              <div class="validation-message">You can't send an empty Ray!</div>>
+            </div>
+          </form>
+        </Card>
+    </Fragment>
+</Fixture>
+
+<Fixture Description="Ray Created With Valid Input" Test="ValidInputCallsCreate">
+    <ComponentUnderTest>
+        <RayInput newRay="@(new RayToCast() { Text = "Test"})"></RayInput>
+    </ComponentUnderTest>
+    <Fragment>
+        <p></p>
+        <Card title="Cast a new ray:">
+          <form>
+            <div class="input-group">
+              <textarea class="form-control valid" value=""></textarea>
+              <div diff:ignore></div>
+            </div>
+          </form>
+        </Card>
+    </Fragment>
+</Fixture>
+
+@code
+{
+  public void EmptyInputDoesntCreate(Fixture fixture)
+  {
+    // Arrange
+    var dataService = new TestDataService();
+    fixture.Services.AddSingleton<IDataService>(dataService);
+    var cut = fixture.GetComponentUnderTest<RayInput>();
+
+    // Attach to UpdatedRays events
+    bool updateTriggered = false;
+    dataService.UpdatedRays += () => updateTriggered = true;
+
+    // Act - cast the ray
+    cut.Find("form").Submit();
+
+    // Assert the update was not triggered, and the markup has the validation message
+    var expected = fixture.GetFragment();
+    Assert.False(updateTriggered);
+    cut.MarkupMatches(expected);
+  }
+  ValidInputCallsCreate
+  
+}
